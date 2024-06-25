@@ -1,5 +1,32 @@
 {
+  "name": "proshop",
+  "version": "1.0.0",
+  "description": "Ecommerce application build with MERN",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "server": "nodemon backend/server.js",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zarifRahman/proshop.git"
+  },
+  "author": "Zarif",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zarifRahman/proshop/issues"
+  },
+  "homepage": "https://github.com/zarifRahman/proshop#readme",
   "dependencies": {
-    "react-router-dom": "^6.23.1"
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "dotenv": "^16.4.5",
+    "nodemon": "^3.1.4"
   }
 }
