@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import products from '../products';
 import {
   Row,
@@ -12,17 +13,27 @@ import {
   Form,
 } from 'react-bootstrap';
 import Rating from '../components/Rating';
+import { addToCart } from '../slices/cartSlice';
 
 const ProductScreen = () => {
   const { id: productId } = useParams();
   const product = products.find((p) => p._id === productId);
   console.log(product)
+  const [qty, setQty] = useState(1);
+  
+  // Actions 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const addToCartHandler = () => {
+    dispatch(addToCart({ ...product, qty }));
+    navigate('/cart');
+  };
 
   return (
     <>
-      {/* <Link className='btn btn-light my-3' to='/'>
+      <Link className='btn btn-light my-3' to='/'>
         Go Back
-      </Link> */}
+      </Link>
       <Row>
             <Col md={6}>
               <Image src={product.image} alt={product.name} fluid />
@@ -72,7 +83,7 @@ const ProductScreen = () => {
                         <Col>
                           <Form.Control
                             as='select'
-                            // value={qty}
+                            value={qty}
                             onChange={(e) => setQty(Number(e.target.value))}
                           >
                             {[...Array(product.countInStock).keys()].map(
@@ -92,8 +103,8 @@ const ProductScreen = () => {
                     <Button
                       className='btn-block'
                       type='button'
-                      // disabled={product.countInStock === 0}
-                      onClick={()=> console.log("first")}
+                      disabled={product?.countInStock === 0}
+                      onClick={addToCartHandler}
                     >
                       Add To Cart
                     </Button>
