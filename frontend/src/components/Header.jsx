@@ -1,23 +1,23 @@
-import { Navbar, Nav, Container, NavDropdown, Badge, Form, FormControl } from "react-bootstrap";
+import { Navbar, Nav, Container, NavDropdown, Badge } from "react-bootstrap";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import { useSelector } from 'react-redux';
 import SearchBox from "./SearchBox";
 import { useState } from "react";
 import products from "../products";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const brands = [...new Set(products.map((product) => product.brand))];
-const Header = () => {
-  const { cartItems } = useSelector((state) => state.cart);
-  const [selectedBrand, setSelectedBrand] = useState("");
-  
-  const handleBrandChange = (event) => {
-    setSelectedBrand(event.target.value);
-  };
 
-  const filteredProducts = selectedBrand
-    ? products.filter((product) => product.brand === selectedBrand)
-    : products; 
+const Header = () => {
+  const navigate = useNavigate();
+  const { cartItems } = useSelector((state) => state.cart);
+  const { userInfo } = useSelector((state) => state.auth);
+  
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/login');
+    window.location.reload();
+  }
 
   return (
     <header>
@@ -48,13 +48,13 @@ const Header = () => {
               </Link>
 
               {/* User links (conditional) */}
-              {false ? (
+              {userInfo?.token ? (
                 <>
-                  <NavDropdown title={"test"} id='username'>
-                    <NavDropdown.Item to='/profile'>
+                  <NavDropdown title={"Logout"} id='username'>
+                    {/* <NavDropdown.Item to='/profile'>
                       Profile
-                    </NavDropdown.Item>
-                    <NavDropdown.Item onClick={()=>console.log("first")}>
+                    </NavDropdown.Item> */}
+                    <NavDropdown.Item onClick={handleLogout}>
                       Logout
                     </NavDropdown.Item>
                   </NavDropdown>
@@ -68,7 +68,7 @@ const Header = () => {
               )}
 
               {/* Admin links */}
-              {true && (
+              {false && (
                 <NavDropdown title='Admin' id='adminmenu'>
                   <NavDropdown.Item to='/admin/productlist'>
                     Products
@@ -95,6 +95,7 @@ const Header = () => {
                   ))}
                 </NavDropdown>
               </Nav.Link>
+              
             </Nav>
           </Navbar.Collapse>
         </Container>
