@@ -3,10 +3,13 @@ import Product from "../components/Product";
 import { useEffect, useState } from "react";
 import axios from 'axios'
 import Loader from '../components/Loader';
+import { useParams } from 'react-router-dom';
 
 const HomeScreen = () => {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
+  const { keyword } = useParams();
+
 
   useEffect(()=> {
     const fetchProducts = async () => {
@@ -23,15 +26,22 @@ const HomeScreen = () => {
 
   },[]);
 
+  // ---
+  const filteredProducts = keyword
+    ? products.filter((product) =>
+        product.name.toLowerCase().includes(keyword.toLowerCase())
+      )
+    : products;
+
   return (
     <>
-    {loading ? ( // Render loader if loading is true
+    {loading ? (
         <Loader />
       ) : (
       <>
         <h1>latest products</h1>
         <Row>
-          {products?.map((product) => (
+          {filteredProducts?.map((product) => (
             <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
               <Product product={product} />
             </Col>
