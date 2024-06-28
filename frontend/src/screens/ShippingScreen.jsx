@@ -41,7 +41,7 @@ const ShippingScreen = () => {
         },
       });
       const data = await response.json();
-      toast.success('Cart updated successfully!');
+      toast.success('Shipping completed successfully!');
       dispatch(clearCartItems());
       navigate('/');
     } catch (error) {

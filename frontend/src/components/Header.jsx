@@ -24,7 +24,6 @@ const Header = () => {
         <Container>
           <Link to='/'> 
             <Navbar.Brand>
-              {/* <img alt='ProShop' /> */}
               Shop Anything
             </Navbar.Brand>
           </Link>
