@@ -3,12 +3,12 @@ import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import FormContainer from '../components/FormContainer';
-// import CheckoutSteps from '../components/CheckoutSteps';
-import { saveShippingAddress } from '../slices/cartSlice';
+import { clearCartItems, saveShippingAddress } from '../slices/cartSlice';
+import { toast } from 'react-toastify';
 
 const ShippingScreen = () => {
   const cart = useSelector((state) => state.cart);
-  const { shippingAddress } = cart;
+  const { shippingAddress, cartItems } = cart;
 
   const [address, setAddress] = useState(shippingAddress.address || '');
   const [city, setCity] = useState(shippingAddress.city || '');
@@ -20,15 +20,37 @@ const ShippingScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     dispatch(saveShippingAddress({ address, city, postalCode, country }));
-    navigate('/payment');
+    // navigate('/payment');
+    const products = cartItems?.map((item) => ({
+      productId: item.id,
+      quantity: item.qty,
+    }));
+
+    try {
+      const response = await fetch('https://fakestoreapi.com/carts', {
+        method: "POST",
+        body: JSON.stringify({
+          date: new Date().toISOString().split('T')[0],
+          products,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await response.json();
+      toast.success('Cart updated successfully!');
+      dispatch(clearCartItems());
+      navigate('/');
+    } catch (error) {
+      toast.error('Failed to update cart!');
+    }
   };
 
   return (
     <FormContainer>
-      {/* <CheckoutSteps step1 step2 /> */}
       <h1>Checkout</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group className='my-2' controlId='address'>

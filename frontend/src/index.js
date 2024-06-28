@@ -13,6 +13,7 @@ import store from './store';
 import CartScreen from './screens/CartScreen';
 import LoginScreen from './screens/LoginScreen';
 import ShippingScreen from './screens/ShippingScreen';
+import PrivateRoute from './components/PrivateRoute';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,7 +23,10 @@ const router = createBrowserRouter(
       <Route path='/product/:id' element={<ProductScreen />} />
       <Route path='/cart' element={<CartScreen />} />
       <Route path='/login' element={<LoginScreen />} />
-      <Route path='/shipping' element={<ShippingScreen />} />
+      {/* Private Route */}
+      <Route path='' element={<PrivateRoute />}>
+        <Route path='/shipping' element={<ShippingScreen />} />
+      </Route>
     </Route>
   )
 );

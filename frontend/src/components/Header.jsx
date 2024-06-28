@@ -65,22 +65,6 @@ const Header = () => {
                   </Navbar.Brand>
                 </Link>
               )}
-
-              {/* Admin links */}
-              {false && (
-                <NavDropdown title='Admin' id='adminmenu'>
-                  <NavDropdown.Item to='/admin/productlist'>
-                    Products
-                  </NavDropdown.Item>
-                  <NavDropdown.Item to='/admin/orderlist'>
-                    Orders
-                  </NavDropdown.Item>
-                  <NavDropdown.Item to='/admin/userlist'>
-                    Users
-                  </NavDropdown.Item>
-                </NavDropdown>
-              )}
-
               {/* Filter by brand dropdown */}
               <Nav.Link>
                 <NavDropdown title="Filter by Brand">

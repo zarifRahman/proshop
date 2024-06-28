@@ -28,10 +28,33 @@ const CartScreen = () => {
     dispatch(removeFromCart(id));
   };
 
-  const checkoutHandler = () => {
-    navigate('/login?redirect=/shipping');
+  // const checkoutHandler = () => {
+  //   navigate('/login?redirect=/shipping');
+  // };
+  const checkoutHandler = async () => {
+    const products = cartItems?.map((item) => ({
+      productId: item.id,
+      quantity: item.qty,
+    }));
+
+    try {
+      const response = await fetch('https://fakestoreapi.com/carts', {
+        method: "POST",
+        body: JSON.stringify({
+          date: new Date().toISOString().split('T')[0],
+          products,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const data = await response.json();
+      navigate('/login?redirect=/shipping');
+    } catch (error) {
+      console.error('Error updating cart:', error);
+    }
   };
-  console.log({cartItems})
+  
   return (
     <Row>
       <Col md={8}>
