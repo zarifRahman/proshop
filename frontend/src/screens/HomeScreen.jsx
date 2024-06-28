@@ -9,16 +9,15 @@ const HomeScreen = () => {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const { keyword } = useParams();
-
+  const [filteredProducts, setFilteredProducts] = useState([])
 
   useEffect(()=> {
     const fetchProducts = async () => {
       try {
-        const {data} = await axios.get('http://localhost:5000/api/products');        
+        const {data} = await axios.get('https://fakestoreapi.com/products'); 
         setProducts(data)
         setLoading(false)
       } catch (error) {
-        console.error('error---',error);
         setLoading(false)
       }
     }
@@ -26,12 +25,16 @@ const HomeScreen = () => {
 
   },[]);
 
-  // ---
-  const filteredProducts = keyword
-    ? products.filter((product) =>
-        product.name.toLowerCase().includes(keyword.toLowerCase())
-      )
-    : products;
+  useEffect(() => {
+    if (keyword) {
+      const filtered = products.filter((product) =>
+        product.title.toLowerCase().includes(keyword.toLowerCase())
+      );
+      setFilteredProducts(filtered);
+    } else {
+      setFilteredProducts(products);
+    }
+  }, [keyword, products]);
 
   return (
     <>
@@ -42,7 +45,7 @@ const HomeScreen = () => {
         <h1>latest products</h1>
         <Row>
           {filteredProducts?.map((product) => (
-            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+            <Col key={product.id} sm={12} md={6} lg={4} xl={3}>
               <Product product={product} />
             </Col>
           ))}
