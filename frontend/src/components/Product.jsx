@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Rating from "./Rating";
 
 const Product = ({ product }) => {
+  console.log('product---', product)
   return (
     <Card className='my-3 p-3 rounded'>
       <a href={`/product/${product.id}`}>
@@ -10,7 +11,7 @@ const Product = ({ product }) => {
       </a>
 
       <Card.Body>
-        <a href={`/product/${product._id}`}>
+        <a href={`/product/${product.id}`}>
           <Card.Title as='div' className='product-title'>
             <strong>{product.title}</strong>
           </Card.Title>

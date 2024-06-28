@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import products from '../products';
+import axios from 'axios';
 import {
   Row,
   Col,
@@ -17,12 +18,31 @@ import { addToCart } from '../slices/cartSlice';
 
 const ProductScreen = () => {
   const { id: productId } = useParams();
-  const product = products.find((p) => p._id === productId);
+  // const product = products.find((p) => p._id === productId);
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [qty, setQty] = useState(1);
-  
+
   // Actions 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const { data } = await axios.get(`https://fakestoreapi.com/products/${productId}`);
+        setProduct(data);
+        setLoading(false);
+      } catch (error) {
+        setError('Failed to fetch product');
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [productId]);
+
+
   const addToCartHandler = () => {
     dispatch(addToCart({ ...product, qty }));
     navigate('/cart');
@@ -35,22 +55,22 @@ const ProductScreen = () => {
       </Link>
       <Row>
             <Col md={6}>
-              <Image src={product.image} alt={product.name} fluid />
+              <Image src={product?.image} alt={product?.name} fluid />
             </Col>
             <Col md={3}>
               <ListGroup variant='flush'>
                 <ListGroup.Item>
-                  <h3>{product.name}</h3>
+                  <h3>{product?.name}</h3>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Rating
-                    value={product.rating}
-                    text={`${product.numReviews} reviews`}
+                    value={product?.rating}
+                    text={`${product?.numReviews} reviews`}
                   />
                 </ListGroup.Item>
-                <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
+                <ListGroup.Item>Price: ${product?.price}</ListGroup.Item>
                 <ListGroup.Item>
-                  Description: {product.description}
+                  Description: {product?.description}
                 </ListGroup.Item>
               </ListGroup>
             </Col>
@@ -61,21 +81,21 @@ const ProductScreen = () => {
                     <Row>
                       <Col>Price:</Col>
                       <Col>
-                        <strong>${product.price}</strong>
+                        <strong>${product?.price}</strong>
                       </Col>
                     </Row>
                   </ListGroup.Item>
-                  <ListGroup.Item>
+                  {/* <ListGroup.Item>
                     <Row>
                       <Col>Status:</Col>
                       <Col>
-                        {product.countInStock > 0 ? 'In Stock' : 'Out Of Stock'}
+                        {product?.countInStock > 0 ? 'In Stock' : 'Out Of Stock'}
                       </Col>
                     </Row>
-                  </ListGroup.Item>
+                  </ListGroup.Item> */}
 
                   {/* Qty Select */}
-                  {product.countInStock > 0 && (
+                  {/* {product?.countInStock > 0 && (
                     <ListGroup.Item>
                       <Row>
                         <Col>Qty</Col>
@@ -96,13 +116,13 @@ const ProductScreen = () => {
                         </Col>
                       </Row>
                     </ListGroup.Item>
-                  )}
+                  )} */}
 
                   <ListGroup.Item>
                     <Button
                       className='btn-block'
                       type='button'
-                      disabled={product?.countInStock === 0}
+                      // disabled={product?.countInStock === 0}
                       onClick={addToCartHandler}
                     >
                       Add To Cart
