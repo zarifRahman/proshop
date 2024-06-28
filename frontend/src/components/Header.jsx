@@ -2,16 +2,15 @@ import { Navbar, Nav, Container, NavDropdown, Badge } from "react-bootstrap";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import { useSelector } from 'react-redux';
 import SearchBox from "./SearchBox";
-import { useState } from "react";
 import products from "../products";
 import { Link, useNavigate } from 'react-router-dom';
-
-const brands = [...new Set(products.map((product) => product.brand))];
 
 const Header = () => {
   const navigate = useNavigate();
   const { cartItems } = useSelector((state) => state.cart);
   const { userInfo } = useSelector((state) => state.auth);
+
+  const brands = [...new Set(products.map((product) => product.brand))];
   
   const handleLogout = () => {
     localStorage.clear();
@@ -95,7 +94,7 @@ const Header = () => {
                   ))}
                 </NavDropdown>
               </Nav.Link>
-              
+
             </Nav>
           </Navbar.Collapse>
         </Container>
