@@ -7,8 +7,13 @@
     ```bash
     cd frontend
     ```
-3. Install the dependencies in frontend directory:
+2. Install the dependencies in frontend directory:
 
     ```bash
     npm install
+    ```
+3. Start the development server:
+
+    ```bash
+    npm start
     ```
