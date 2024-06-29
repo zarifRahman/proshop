@@ -1,6 +1,6 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Card, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
@@ -46,35 +46,42 @@ const LoginScreen: React.FC = () => {
 
   return (
     <FormContainer>
-      <h1>Sign In</h1>
+      <Row className='justify-content-center pt-36'>
+        <Col xs={12} md={6}>
+          <Card>
+            <Card.Body>
+              <Card.Title className='text-center'>Sign In</Card.Title>
+              <Form onSubmit={submitHandler}>
+                <Form.Group className='my-2' controlId='username'>
+                  <Form.Label>Your Name</Form.Label>
+                  <Form.Control
+                    type='username'
+                    placeholder='Enter username'
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </Form.Group>
 
-      <Form onSubmit={submitHandler}>
-        <Form.Group className='my-2' controlId='username'>
-          <Form.Label>Your Name</Form.Label>
-          <Form.Control
-            type='username'
-            placeholder='Enter username'
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </Form.Group>
+                <Form.Group className='my-2' controlId='password'>
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control
+                    type='password'
+                    placeholder='Enter password'
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </Form.Group>
 
-        <Form.Group className='my-2' controlId='password'>
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type='password'
-            placeholder='Enter password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </Form.Group>
+                <Button disabled={isLoading} type='submit' variant='primary'>
+                  Sign In
+                </Button>
 
-        <Button disabled={isLoading} type='submit' variant='primary'>
-          Sign In
-        </Button>
-
-        {isLoading && <Loader />}
-      </Form>
+                {isLoading && <Loader />}
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
     </FormContainer>
   );
 };
