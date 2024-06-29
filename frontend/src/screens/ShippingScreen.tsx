@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -6,25 +6,30 @@ import FormContainer from '../components/FormContainer';
 import { clearCartItems, saveShippingAddress } from '../slices/cartSlice';
 import { toast } from 'react-toastify';
 
-const ShippingScreen = () => {
-  const cart = useSelector((state) => state.cart);
+interface CartItem {
+  id: number; 
+  qty: number;
+}
+
+const ShippingScreen: React.FC = () => {
+  const cart = useSelector((state: any) => state.cart);
   const { shippingAddress, cartItems } = cart;
 
-  const [address, setAddress] = useState(shippingAddress.address || '');
-  const [city, setCity] = useState(shippingAddress.city || '');
-  const [postalCode, setPostalCode] = useState(
+  const [address, setAddress] = useState<string>(shippingAddress.address || '');
+  const [city, setCity] = useState<string>(shippingAddress.city || '');
+  const [postalCode, setPostalCode] = useState<string>(
     shippingAddress.postalCode || ''
   );
-  const [country, setCountry] = useState(shippingAddress.country || '');
+  const [country, setCountry] = useState<string>(shippingAddress.country || '');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const submitHandler = async (e) => {
+  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(saveShippingAddress({ address, city, postalCode, country }));
-    // navigate('/payment');
-    const products = cartItems?.map((item) => ({
+
+    const products = cartItems?.map((item:CartItem) => ({
       productId: item.id,
       quantity: item.qty,
     }));
@@ -61,7 +66,7 @@ const ShippingScreen = () => {
             value={address}
             required
             onChange={(e) => setAddress(e.target.value)}
-          ></Form.Control>
+          />
         </Form.Group>
 
         <Form.Group className='my-2' controlId='city'>
@@ -72,7 +77,7 @@ const ShippingScreen = () => {
             value={city}
             required
             onChange={(e) => setCity(e.target.value)}
-          ></Form.Control>
+          />
         </Form.Group>
 
         <Form.Group className='my-2' controlId='postalCode'>
@@ -83,7 +88,7 @@ const ShippingScreen = () => {
             value={postalCode}
             required
             onChange={(e) => setPostalCode(e.target.value)}
-          ></Form.Control>
+          />
         </Form.Group>
 
         <Form.Group className='my-2' controlId='country'>
@@ -94,7 +99,7 @@ const ShippingScreen = () => {
             value={country}
             required
             onChange={(e) => setCountry(e.target.value)}
-          ></Form.Control>
+          />
         </Form.Group>
 
         <Button type='submit' variant='primary'>
