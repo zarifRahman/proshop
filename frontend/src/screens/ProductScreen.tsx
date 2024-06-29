@@ -1,8 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import products from '../products';
 import axios from 'axios';
 import {
   Row,
@@ -16,20 +14,32 @@ import {
 import Rating from '../components/Rating';
 import { addToCart } from '../slices/cartSlice';
 
-const ProductScreen = () => {
-  const { id: productId } = useParams();
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [qty, setQty] = useState(1);
+interface Product {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  image: string;
+  rating: {
+    rate: number;
+    count: number;
+  };
+}
 
-  // Actions 
+const ProductScreen: React.FC = () => {
+  const { id: productId } = useParams<{ id: string }>();
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [qty, setQty] = useState<number>(1);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const { data } = await axios.get(`https://fakestoreapi.com/products/${productId}`);
+        const { data } = await axios.get<Product>(`https://fakestoreapi.com/products/${productId}`);
         setProduct(data);
         setLoading(false);
       } catch (error) {
@@ -40,16 +50,25 @@ const ProductScreen = () => {
     fetchProduct();
   }, [productId]);
 
-
   const addToCartHandler = () => {
-    dispatch(addToCart({ ...product, qty }));
-    navigate('/cart');
+    if (product) {
+      dispatch(addToCart({ ...product, qty }));
+      navigate('/cart');
+    }
   };
 
   const countInStockOptions = Array.from({ length: 10 }, (_, i) => i + 1);
 
-  const { cartItems } = useSelector((state) => state.cart);
-  const inCart = cartItems?.some(item => item.id === product?.id);
+  const { cartItems } = useSelector((state: any) => state.cart);
+  const inCart = cartItems?.some((item:any) => item.id === product?.id);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
     <>
@@ -88,7 +107,6 @@ const ProductScreen = () => {
                   </Col>
                 </Row>
               </ListGroup.Item>
-              
               <ListGroup.Item>
                 <Row>
                   <Col>Qty</Col>
@@ -96,20 +114,15 @@ const ProductScreen = () => {
                     <Form.Control
                       as='select'
                       value={qty}
-                      onChange={(e) => setQty(Number(e.target.value))}
+                      onChange={(e:any) => setQty(Number(e.target.value))}
                     >
-                      {countInStockOptions?.map(
-                        (x) => (
-                          <option key={x} value={x}>
-                            {x}
-                          </option>
-                        )
-                      )}
+                      {countInStockOptions.map(x => (
+                        <option key={x} value={x}>{x}</option>
+                      ))}
                     </Form.Control>
                   </Col>
                 </Row>
               </ListGroup.Item>
-
               <ListGroup.Item>
                 <Button
                   className='btn-block'
@@ -125,7 +138,7 @@ const ProductScreen = () => {
         </Col>
       </Row>
     </>
-  )
-}
+  );
+};
 
-export default ProductScreen
+export default ProductScreen;
