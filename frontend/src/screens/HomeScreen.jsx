@@ -60,20 +60,24 @@ const HomeScreen = () => {
         <Loader />
       ) : (
       <>
-        <ButtonGroup className="mb-3">
-          <Button
-            variant={sortOrder === 'asc' ? 'primary' : 'secondary'}
+        <div className="mb-3 inline-flex">
+          <button
+            className={`px-4 py-2 rounded-l-full ${
+              sortOrder === 'asc' ? 'bg-blue-500 text-black opacity-50' : 'bg-[rgba(60,76,93,1)] text-black'
+            }`}
             onClick={() => handleSortChange('asc')}
           >
             Sort Ascending
-          </Button>
-          <Button
-            variant={sortOrder === 'desc' ? 'primary' : 'secondary'}
+          </button>
+          <button
+            className={`px-4 py-2 rounded-r-full ${
+              sortOrder === 'desc' ? 'bg-blue-500 text-black opacity-50' : 'bg-[rgba(60,76,93,1)] text-black'
+            }`}
             onClick={() => handleSortChange('desc')}
           >
             Sort Descending
-          </Button>
-        </ButtonGroup>
+          </button>
+        </div>
         <h1>All Products</h1>
         <Row>
           {filteredProducts?.map((product) => (
