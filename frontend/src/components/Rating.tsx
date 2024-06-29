@@ -3,13 +3,13 @@ import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa';
 
 interface RatingProps {
   value: any;
-  text?: string;
+  text: string;
   color?: string;
 }
 
 const Rating: React.FC<RatingProps> = ({ value, text, color = '#f8e825' }) => {
   return (
-    <div className='rating'>
+    <div className="flex items-center space-x-1">
       <span>
         {value >= 1 ? (
           <FaStar style={{ color }} />
@@ -55,7 +55,7 @@ const Rating: React.FC<RatingProps> = ({ value, text, color = '#f8e825' }) => {
           <FaRegStar style={{ color }} />
         )}
       </span>
-      <span className='rating-text'>{text && text}</span>
+      <span className="ml-2 text-gray-600">{text && text}</span>
     </div>
   );
 };

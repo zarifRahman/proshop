@@ -73,25 +73,28 @@ const HomeScreen: React.FC = () => {
         <Loader />
       ) : (
         <>
-          <div className="mb-3 inline-flex">
-            <button
-              className={`px-4 py-2 rounded-l-full ${
-                sortOrder === 'asc' ? 'bg-blue-500 text-black opacity-50' : 'bg-[rgba(60,76,93,1)] text-black'
-              }`}
-              onClick={() => handleSortChange('asc')}
-            >
-              Sort Ascending
-            </button>
-            <button
-              className={`px-4 py-2 rounded-r-full ${
-                sortOrder === 'desc' ? 'bg-blue-500 text-black opacity-50' : 'bg-[rgba(60,76,93,1)] text-black'
-              }`}
-              onClick={() => handleSortChange('desc')}
-            >
-              Sort Descending
-            </button>
+          <div className="flex items-center justify-between mb-3">
+            <h1 className="text-xl font-bold">All Products</h1>
+            <div className="inline-flex sm:flex-row">
+              <button
+                className={`px-3 py-2 border border-black rounded-l-full text-sm ${
+                  sortOrder === 'asc' ? 'bg-[rgba(60,76,93,1)] text-white' : 'bg-white text-black opacity-50'
+                }`}
+                onClick={() => handleSortChange('asc')}
+              >
+                Asc Sort
+              </button>
+              <button
+                className={`px-3 py-2 border border-black rounded-r-full ${
+                  sortOrder === 'desc' ? 'bg-[rgba(60,76,93,1)] text-white' : 'bg-white text-black opacity-50'
+                }`}
+                onClick={() => handleSortChange('desc')}
+              >
+                Desc Sort
+              </button>
+            </div>
           </div>
-          <h1>All Products</h1>
+
           <Row>
             {filteredProducts.map((product) => (
               <Col key={product.id} sm={12} md={6} lg={4} xl={3}>

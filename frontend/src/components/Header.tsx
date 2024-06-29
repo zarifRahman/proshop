@@ -29,44 +29,37 @@ const Header: FC = () => {
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
             <Nav className='ms-auto align-items-center'>
-              {/* Search box */}
               <SearchBox />
 
-              {/* Filter by brand dropdown */}
-              <NavDropdown title='Filter by Brand'>
-                <NavDropdown.Item key='all' eventKey=''>
-                  All Brands
-                </NavDropdown.Item>
-                {brands.map((brand) => (
-                  <NavDropdown.Item key={brand} eventKey={brand}>
-                    {brand}
-                  </NavDropdown.Item>
-                ))}
-              </NavDropdown>
-
               {/* Cart link with badge */}
-              <Link to='/cart'>
+              <Link to='/cart' className="ml-4">
                 <Navbar.Brand>
-                  <FaShoppingCart /> Cart
+                <div className="flex items-center justify-center pt-4">
+                  <FaShoppingCart /> <span className='mx-1'>Cart</span>
                   {cartItems.length > 0 && (
-                    <Badge pill bg='success' style={{ marginLeft: '5px' }}>
+                    <Badge pill bg='success'>
                       {cartItems?.reduce((a:number, c:any) => a + c.qty, 0)}
                     </Badge>
                   )}
+                </div>
                 </Navbar.Brand>
               </Link>
 
               {/* User links (conditional) */}
               {userInfo?.token ? (
                 <>
-                  <Navbar.Brand onClick={handleLogout} style={{ cursor: 'pointer' }}>
-                    <FaSignOutAlt /> Logout
+                  <Navbar.Brand onClick={handleLogout} className="ml-4" style={{ cursor: 'pointer' }}>
+                    <div className="flex items-center">
+                      <FaSignOutAlt /> Logout
+                    </div>
                   </Navbar.Brand>
                 </>
               ) : (
-                <Link to='/login'>
+                <Link to='/login' className="ml-4 pt-4">
                   <Navbar.Brand>
-                    <FaUser /> Sign In
+                    <div className="flex items-center">
+                      <FaUser /> Sign In
+                    </div>
                   </Navbar.Brand>
                 </Link>
               )}
