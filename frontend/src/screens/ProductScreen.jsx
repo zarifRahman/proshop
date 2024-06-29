@@ -18,7 +18,6 @@ import { addToCart } from '../slices/cartSlice';
 
 const ProductScreen = () => {
   const { id: productId } = useParams();
-  // const product = products.find((p) => p._id === productId);
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -38,7 +37,6 @@ const ProductScreen = () => {
         setLoading(false);
       }
     };
-
     fetchProduct();
   }, [productId]);
 
@@ -50,6 +48,8 @@ const ProductScreen = () => {
 
   const countInStockOptions = Array.from({ length: 10 }, (_, i) => i + 1);
 
+  console.log('product',product)
+
   return (
     <>
       <Link className='btn btn-light my-3' to='/'>
@@ -57,17 +57,17 @@ const ProductScreen = () => {
       </Link>
       <Row>
             <Col md={6}>
-              <Image src={product?.image} alt={product?.name} fluid />
+              <Image src={product?.image} alt={product?.title} fluid />
             </Col>
             <Col md={3}>
               <ListGroup variant='flush'>
                 <ListGroup.Item>
-                  <h3>{product?.name}</h3>
+                  <h3>{product?.title}</h3>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Rating
-                    value={product?.rating}
-                    text={`${product?.numReviews} reviews`}
+                    value={product?.rating?.rate}
+                    text={`${product?.rating?.count} reviews`}
                   />
                 </ListGroup.Item>
                 <ListGroup.Item>Price: ${product?.price}</ListGroup.Item>
@@ -87,16 +87,6 @@ const ProductScreen = () => {
                       </Col>
                     </Row>
                   </ListGroup.Item>
-                  {/* <ListGroup.Item>
-                    <Row>
-                      <Col>Status:</Col>
-                      <Col>
-                        {product?.countInStock > 0 ? 'In Stock' : 'Out Of Stock'}
-                      </Col>
-                    </Row>
-                  </ListGroup.Item> */}
-
-                  {/* Qty Select */}
                   
                   <ListGroup.Item>
                     <Row>
@@ -123,7 +113,6 @@ const ProductScreen = () => {
                     <Button
                       className='btn-block'
                       type='button'
-                      // disabled={product?.countInStock === 0}
                       onClick={addToCartHandler}
                     >
                       Add To Cart

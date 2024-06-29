@@ -1,5 +1,5 @@
 import { Navbar, Nav, Container, NavDropdown, Badge } from "react-bootstrap";
-import { FaShoppingCart, FaUser } from "react-icons/fa";
+import { FaShoppingCart, FaSignOutAlt, FaUser } from "react-icons/fa";
 import { useSelector } from 'react-redux';
 import SearchBox from "./SearchBox";
 import products from "../products";
@@ -29,9 +29,23 @@ const Header = () => {
           </Link>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
-            <Nav className='ms-auto'>
+            <Nav className='ms-auto align-items-center'>
               {/* Search box */}
               <SearchBox />
+
+              {/* Filter by brand dropdown */}
+              <Nav.Link>
+                <NavDropdown title="Filter by Brand">
+                  <NavDropdown.Item key="all" value="">
+                    All Brands
+                  </NavDropdown.Item>
+                  {brands.map((brand) => (
+                    <NavDropdown.Item key={brand} value={brand}>
+                      {brand}
+                    </NavDropdown.Item>
+                  ))}
+                </NavDropdown>
+              </Nav.Link>
 
               {/* Cart link with badge */}
               <Link to='/cart'>
@@ -48,14 +62,9 @@ const Header = () => {
               {/* User links (conditional) */}
               {userInfo?.token ? (
                 <>
-                  <NavDropdown title={"Logout"} id='username'>
-                    {/* <NavDropdown.Item to='/profile'>
-                      Profile
-                    </NavDropdown.Item> */}
-                    <NavDropdown.Item onClick={handleLogout}>
-                      Logout
-                    </NavDropdown.Item>
-                  </NavDropdown>
+                  <Navbar.Brand onClick={handleLogout} style={{ cursor: 'pointer' }}>
+                    <FaSignOutAlt /> Logout
+                  </Navbar.Brand>
                 </>
               ) : (
                 <Link to='/login'> 
@@ -64,20 +73,6 @@ const Header = () => {
                   </Navbar.Brand>
                 </Link>
               )}
-              {/* Filter by brand dropdown */}
-              <Nav.Link>
-                <NavDropdown title="Filter by Brand">
-                  <NavDropdown.Item key="all" value="">
-                    All Brands
-                  </NavDropdown.Item>
-                  {brands.map((brand) => (
-                    <NavDropdown.Item key={brand} value={brand}>
-                      {brand}
-                    </NavDropdown.Item>
-                  ))}
-                </NavDropdown>
-              </Nav.Link>
-
             </Nav>
           </Navbar.Collapse>
         </Container>
