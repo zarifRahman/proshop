@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -13,23 +14,23 @@ import { FaTrash } from 'react-icons/fa';
 import Message from '../components/Message';
 import { addToCart, removeFromCart } from '../slices/cartSlice';
 
-const CartScreen = () => {
+const CartScreen: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const cart = useSelector((state) => state.cart);
+  const cart = useSelector((state: any) => state.cart);
   const { cartItems } = cart;
 
-  const addToCartHandler = async (product, qty) => {
+  const addToCartHandler = (product: any, qty: number) => {
     dispatch(addToCart({ ...product, qty }));
   };
 
-  const removeFromCartHandler = (id) => {
+  const removeFromCartHandler = (id: string) => {
     dispatch(removeFromCart(id));
   };
 
   const checkoutHandler = async () => {
-    const products = cartItems?.map((item) => ({
+    const products = cartItems?.map((item: any) => ({
       productId: item.id,
       quantity: item.qty,
     }));
@@ -62,7 +63,7 @@ const CartScreen = () => {
           </Message>
         ) : (
           <ListGroup variant='flush'>
-            {cartItems?.map((item) => (
+            {cartItems?.map((item: any) => (
               <ListGroup.Item key={item.id}>
                 <Row>
                   <Col md={2}>
@@ -76,7 +77,7 @@ const CartScreen = () => {
                     <Form.Control
                       as='select'
                       value={item.qty}
-                      onChange={(e) =>
+                      onChange={(e:any) =>
                         addToCartHandler(item, Number(e.target.value))
                       }
                     >
@@ -107,12 +108,12 @@ const CartScreen = () => {
           <ListGroup variant='flush'>
             <ListGroup.Item>
               <h2>
-                Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
+                Subtotal ({cartItems.reduce((acc: number, item: any) => acc + item.qty, 0)})
                 items
               </h2>
               $
               {cartItems
-                .reduce((acc, item) => acc + item.qty * item.price, 0)
+                .reduce((acc: number, item: any) => acc + item.qty * item.price, 0)
                 .toFixed(2)}
             </ListGroup.Item>
             <ListGroup.Item>

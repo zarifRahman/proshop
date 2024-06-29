@@ -1,31 +1,30 @@
-import { Navbar, Nav, Container, NavDropdown, Badge } from "react-bootstrap";
-import { FaShoppingCart, FaSignOutAlt, FaUser } from "react-icons/fa";
+import React, { FC } from 'react';
+import { Navbar, Nav, Container, NavDropdown, Badge } from 'react-bootstrap';
+import { FaShoppingCart, FaSignOutAlt, FaUser } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
-import SearchBox from "./SearchBox";
-import products from "../products";
+import SearchBox from './SearchBox';
+import products from '../products';
 import { Link, useNavigate } from 'react-router-dom';
 
-const Header = () => {
+const Header: FC = () => {
   const navigate = useNavigate();
-  const { cartItems } = useSelector((state) => state.cart);
-  const { userInfo } = useSelector((state) => state.auth);
+  const { cartItems } = useSelector((state: any) => state.cart);
+  const { userInfo } = useSelector((state: any) => state.auth);
 
-  const brands = [...new Set(products.map((product) => product.brand))];
-  
+  const brands: string[] = [...new Set(products.map((product: any) => product.brand))];
+
   const handleLogout = () => {
     localStorage.clear();
     navigate('/login');
     window.location.reload();
-  }
+  };
 
   return (
     <header>
       <Navbar bg='primary' variant='dark' expand='lg' collapseOnSelect>
         <Container>
-          <Link to='/'> 
-            <Navbar.Brand>
-              Shop Anything
-            </Navbar.Brand>
+          <Link to='/'>
+            <Navbar.Brand>Shop Anything</Navbar.Brand>
           </Link>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
@@ -34,28 +33,26 @@ const Header = () => {
               <SearchBox />
 
               {/* Filter by brand dropdown */}
-              <Nav.Link>
-                <NavDropdown title="Filter by Brand">
-                  <NavDropdown.Item key="all" value="">
-                    All Brands
+              <NavDropdown title='Filter by Brand'>
+                <NavDropdown.Item key='all' eventKey=''>
+                  All Brands
+                </NavDropdown.Item>
+                {brands.map((brand) => (
+                  <NavDropdown.Item key={brand} eventKey={brand}>
+                    {brand}
                   </NavDropdown.Item>
-                  {brands.map((brand) => (
-                    <NavDropdown.Item key={brand} value={brand}>
-                      {brand}
-                    </NavDropdown.Item>
-                  ))}
-                </NavDropdown>
-              </Nav.Link>
+                ))}
+              </NavDropdown>
 
               {/* Cart link with badge */}
               <Link to='/cart'>
                 <Navbar.Brand>
                   <FaShoppingCart /> Cart
-                    {cartItems.length > 0 && (
-                      <Badge pill bg='success' style={{ marginLeft: '5px' }}>
-                        {cartItems.reduce((a, c) => a + c.qty, 0)}
-                      </Badge>
-                    )}
+                  {cartItems.length > 0 && (
+                    <Badge pill bg='success' style={{ marginLeft: '5px' }}>
+                      {cartItems?.reduce((a:number, c:any) => a + c.qty, 0)}
+                    </Badge>
+                  )}
                 </Navbar.Brand>
               </Link>
 
@@ -67,7 +64,7 @@ const Header = () => {
                   </Navbar.Brand>
                 </>
               ) : (
-                <Link to='/login'> 
+                <Link to='/login'>
                   <Navbar.Brand>
                     <FaUser /> Sign In
                   </Navbar.Brand>
