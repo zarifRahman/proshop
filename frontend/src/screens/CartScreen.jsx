@@ -28,9 +28,6 @@ const CartScreen = () => {
     dispatch(removeFromCart(id));
   };
 
-  // const checkoutHandler = () => {
-  //   navigate('/login?redirect=/shipping');
-  // };
   const checkoutHandler = async () => {
     const products = cartItems?.map((item) => ({
       productId: item.id,
@@ -83,7 +80,7 @@ const CartScreen = () => {
                         addToCartHandler(item, Number(e.target.value))
                       }
                     >
-                      {[...Array(item.qty).keys()].map((x) => (
+                      {[...Array(10).keys()].map((x) => (
                         <option key={x + 1} value={x + 1}>
                           {x + 1}
                         </option>
