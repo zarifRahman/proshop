@@ -48,8 +48,6 @@ const ProductScreen = () => {
 
   const countInStockOptions = Array.from({ length: 10 }, (_, i) => i + 1);
 
-  console.log('product',product)
-
   return (
     <>
       <Link className='btn btn-light my-3' to='/'>
