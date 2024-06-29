@@ -11,7 +11,10 @@ interface ProductType {
   description: string;
   price: number;
   image: string;
-  category: string;
+  rating: {
+    rate: number;
+    count: number;
+  };
 }
 
 const HomeScreen: React.FC = () => {
